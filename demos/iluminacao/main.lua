@@ -12,9 +12,14 @@ local coolLight
 local warmMarker
 local coolMarker
 local movingSphere
+local flashlight
+local torch
 local time = 0
 local lightAngle = 0
 local showHelp = true
+local qualities = { "low", "medium", "high", "ultra" }
+local qualityIndex = 3
+local toon, rim, fog = false, false, false
 
 local function vertex(out, position, normal, u, v, color)
     out[#out + 1] = {
@@ -115,34 +120,39 @@ local function register(model, options)
     return model
 end
 
+local function onOff(value)
+    return value and "ON" or "OFF"
+end
+
 local function makeTextPanel()
+    local stats = lighting:getStats()
     love.graphics.push("all")
     love.graphics.setDepthMode()
     love.graphics.setColor(0.025, 0.035, 0.055, 0.86)
-    love.graphics.rectangle("fill", 16, 16, 430, showHelp and 186 or 64, 8, 8)
+    love.graphics.rectangle("fill", 16, 16, 470, showHelp and 262 or 88, 8, 8)
 
     love.graphics.setColor(0.92, 0.96, 1, 1)
     love.graphics.print("g3d-iluminacao  |  real-time lighting demo", 30, 28)
-
-    local status = ("Shadows: %s   |   Point lights: %s   |   Map: %d")
-        :format(
-            lighting.shadowsEnabled and "ON" or "OFF",
-            lighting.pointLightsEnabled and "ON" or "OFF",
-            lighting.shadowResolution
-        )
-    love.graphics.print(status, 30, 54)
+    love.graphics.print(("Quality: %s (shadow map %d)   |   FPS: %d")
+        :format(lighting.quality, lighting.shadowResolution, love.timer.getFPS()), 30, 50)
+    love.graphics.print(("Lights: %d/%d   Models: %d drawn, %d culled   Shadow redraws: %d")
+        :format(stats.lightsActive, stats.lightsTotal, stats.modelsDrawn, stats.modelsCulled, stats.shadowUpdates), 30, 72)
 
     if showHelp then
         love.graphics.setColor(0.72, 0.82, 0.94, 1)
-        love.graphics.print("WASD: move camera     Mouse: look around", 30, 84)
-        love.graphics.print("Space / Shift: move up / down", 30, 106)
-        love.graphics.print("F: toggle shadows     G: toggle point lights", 30, 128)
-        love.graphics.print("1 / 2 / 3: shadow map 512 / 1024 / 2048", 30, 150)
-        love.graphics.print("Arrows: rotate sun    H: hide this panel", 30, 172)
-        love.graphics.print(("FPS: %d"):format(love.timer.getFPS()), 30, 196)
+        love.graphics.print("WASD / Space / Shift: move     Mouse: look (click to capture)", 30, 104)
+        love.graphics.print(("F: shadows %s     G: local lights %s     L: flashlight %s")
+            :format(onOff(lighting.shadowsEnabled), onOff(lighting.lightsEnabled), onOff(flashlight.enabled)), 30, 126)
+        love.graphics.print(("T: toon shading %s     B: rim light %s     V: fog %s")
+            :format(onOff(toon), onOff(rim), onOff(fog)), 30, 148)
+        love.graphics.print("Q: quality preset (low / medium / high / ultra)", 30, 170)
+        love.graphics.print("Left / Right arrows: rotate the sun     R: reset camera", 30, 192)
+        love.graphics.print("Light types: sun, point (orange + blue), spot (flashlight),", 30, 214)
+        love.graphics.print("flickering torch (green) and a directional fill light.", 30, 236)
+        love.graphics.print("H: hide this panel", 30, 258)
     else
         love.graphics.setColor(0.72, 0.82, 0.94, 1)
-        love.graphics.print("Press H to show controls", 30, 80)
+        love.graphics.print("Press H to show controls", 30, 98)
     end
 
     love.graphics.pop()
@@ -158,16 +168,17 @@ function love.load()
     whiteTexture:setFilter("nearest", "nearest")
 
     lighting = Lighting.new({
-        shadowResolution = 1024,
+        quality = qualities[qualityIndex],
         shadowRange = 19,
         shadowDistance = 40,
         shadowBias = 0.0018,
         shadowStrength = 0.92,
-        ambientColor = {0.16, 0.18, 0.23},
         directionalColor = {1.0, 0.92, 0.78},
-        directionalIntensity = 0.9
+        directionalIntensity = 0.85
     })
     lighting:setDirection(0.42, 0.34, -0.84)
+    -- hemisphere ambient: bluish sky on top, warm ground bounce below
+    lighting:setHemisphere({0.20, 0.24, 0.32}, {0.12, 0.10, 0.08})
 
     -- A large receiver plane, plus several solid objects that cast shadows.
     register(createModel(makePlane(28, 28, {0.48, 0.52, 0.60}), 0, 0, -0.08),
@@ -206,6 +217,34 @@ function love.load()
         coolLight.position[1], coolLight.position[2], coolLight.position[3], 0.28),
         {castsShadow = false, receivesShadows = false, emissiveColor = {0.10, 0.32, 1.0}, emissiveStrength = 2.8})
 
+    -- a flickering torch (point light with flicker)
+    torch = lighting:addPointLight({
+        position = {-0.5, -5.2, 1.4},
+        color = {0.35, 1.0, 0.35},
+        intensity = 2.4,
+        range = 6,
+        flicker = {amount = 0.45, speed = 9}
+    })
+
+    -- a spot light that works like a flashlight, it follows the camera
+    flashlight = lighting:addSpotLight({
+        position = {0, 0, 0},
+        direction = {1, 0, 0},
+        color = {1.0, 0.96, 0.85},
+        intensity = 3,
+        range = 28,
+        innerAngle = 12,
+        outerAngle = 26,
+        enabled = false
+    })
+
+    -- a cheap directional fill light, like moonlight from the other side (no shadows)
+    lighting:addDirectionalLight({
+        direction = {-0.5, -0.3, -0.4},
+        color = {0.35, 0.45, 0.9},
+        intensity = 0.18
+    })
+
     g3d.camera.lookAt(10, -14, 9, 0, 0, 0.6)
 end
 
@@ -228,6 +267,11 @@ function love.update(dt)
 
     movingSphere:setTranslation(2.0, -3.0, 1.0 + math.sin(time * 1.2) * 0.55)
     movingSphere:setRotation(0, time * 0.35, time * 0.6)
+
+    -- the flashlight follows the camera
+    local camera = g3d.camera
+    flashlight:setPosition(camera.position[1], camera.position[2], camera.position[3] - 0.15)
+    flashlight:setDirection(camera.getLookVector())
 
     if love.keyboard.isDown("left") then lightAngle = lightAngle - dt * 0.7 end
     if love.keyboard.isDown("right") then lightAngle = lightAngle + dt * 0.7 end
@@ -258,13 +302,21 @@ function love.keypressed(key)
     elseif key == "f" then
         lighting:setShadowsEnabled(not lighting.shadowsEnabled)
     elseif key == "g" then
-        lighting:setPointLightsEnabled(not lighting.pointLightsEnabled)
-    elseif key == "1" then
-        lighting:setShadowResolution(512)
-    elseif key == "2" then
-        lighting:setShadowResolution(1024)
-    elseif key == "3" then
-        lighting:setShadowResolution(2048)
+        lighting:setLightsEnabled(not lighting.lightsEnabled)
+    elseif key == "l" then
+        flashlight:setEnabled(not flashlight.enabled)
+    elseif key == "t" then
+        toon = not toon
+        lighting:setToon(toon and 3 or 0)
+    elseif key == "b" then
+        rim = not rim
+        lighting:setRim(rim and {0.5, 0.75, 1.0} or nil, 3, 0.7)
+    elseif key == "v" then
+        fog = not fog
+        lighting:setFog(fog and {0.035, 0.045, 0.065} or nil, 12, 45)
+    elseif key == "q" then
+        qualityIndex = qualityIndex % #qualities + 1
+        lighting:setQuality(qualities[qualityIndex])
     elseif key == "h" then
         showHelp = not showHelp
     elseif key == "r" then

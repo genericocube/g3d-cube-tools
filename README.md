@@ -6,7 +6,7 @@ Coleção de ferramentas para o [g3d](https://github.com/groverburger/g3d) 1.6.0
 
 | Ferramenta | O que faz | Onde fica | Docs |
 |---|---|---|---|
-| **g3d-iluminacao** | Luz em tempo real, sombras e até 4 luzes de ponto | `g3d-iluminacao/` | [docs/iluminacao.md](docs/iluminacao.md) |
+| **g3d-iluminacao** | Luz em tempo real: sol com sombras, luzes de ponto, spot e direcional, neblina, toon, presets de qualidade | `g3d-iluminacao/` | [docs/iluminacao.md](docs/iluminacao.md) |
 | **som3d** | Áudio espacial 3D (distância, Doppler, filtros, reverb) | `som3d.lua` | [docs/som3d.md](docs/som3d.md) |
 | **g3d-glb** | Carrega `.glb` com cores, texturas e animações de esqueleto | `g3d/glb.lua` | [docs/glb.md](docs/glb.md) |
 
@@ -50,7 +50,7 @@ MIT (veja `LICENSE`). O g3d é de groverburger, também MIT (`g3d-LICENSE`, `THI
 
 ## 🇺🇸 English
 
-Tools for [g3d](https://github.com/groverburger/g3d) 1.6.0 (LÖVE 11.4+) by **generico_cube**: real-time lighting and shadows (`g3d-iluminacao/`), 3D spatial audio (`som3d.lua`) and an animated `.glb` loader (`g3d/glb.lua`).
+Tools for [g3d](https://github.com/groverburger/g3d) 1.6.0 (LÖVE 11.4+) by **generico_cube**: real-time lighting (sun with shadows, point / spot / directional lights, fog, toon, quality presets) (`g3d-iluminacao/`), 3D spatial audio (`som3d.lua`) and an animated `.glb` loader (`g3d/glb.lua`).
 
 **Use everything:** copy `g3d/`, `g3d-iluminacao/` and `som3d.lua` into your project and `require` them as shown above.
 **Use one tool:** copy `g3d/` plus that tool's file/folder (`g3d-glb` is already inside `g3d/`).
