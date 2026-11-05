@@ -6,12 +6,14 @@ local demos = {
     {key = "1", name = "g3d-iluminacao", info = "luz em tempo real + sombras", file = "demos/iluminacao/main.lua"},
     {key = "2", name = "som3d",          info = "áudio espacial 3D",           file = "demos/som3d/main.lua"},
     {key = "3", name = "g3d-glb",        info = "modelos .glb animados",       file = "demos/glb/main.lua"},
+    {key = "4", name = "g3d-interface-e-entrada", info = "UI, joystick, toque e clique em 3D", file = "demos/interface/main.lua"},
 }
 
 -- callbacks que cada demo pode definir, são limpos antes de abrir a demo escolhida
 local callbackNames = {
     "load", "update", "draw", "keypressed", "keyreleased", "mousepressed", "mousereleased",
     "mousemoved", "wheelmoved", "textinput", "resize", "focus", "visible", "quit",
+    "touchpressed", "touchreleased", "touchmoved", "gamepadpressed", "gamepadreleased", "gamepadaxis",
 }
 
 local function startDemo(demo)
