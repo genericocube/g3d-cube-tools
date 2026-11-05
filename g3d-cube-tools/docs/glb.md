@@ -14,12 +14,12 @@ Feito por **generico_cube**.
 
 ## Instalação
 
-Copie [`example/g3d/glb.lua`](example/g3d/glb.lua) para dentro da pasta `g3d/` do seu projeto.
+Copie a pasta [`g3d-cube-tools/g3d-glb/`](../g3d-glb/init.lua) para o seu projeto (junto da pasta `g3d/`).
 
 ## Modelo animado
 
 ```lua
-local glb = require "g3d.glb"
+local glb = require "g3d-cube-tools.g3d-glb"
 
 local personagem = glb.newModel("modelos/personagem.glb", {0, 0, 0})
 personagem:play("Walk")
@@ -68,7 +68,7 @@ Todos os comandos possuem nomes em inglês e português. Você pode utilizar o i
 
 ```lua
 local g3d = require "g3d"
-local glb = require "g3d.glb"
+local glb = require "g3d-cube-tools.g3d-glb"
 
 local verts, tex = glb.load("modelos/cubo_magico.glb")
 local model = g3d.newModel(verts, tex, {0, 0, 0}, nil, 1)
@@ -123,7 +123,7 @@ Para exportar várias animações no mesmo arquivo, utilize Actions ou NLA Track
 
 MIT. Feito por **generico_cube**.
 
-O g3d, incluído em `example/g3d/`, pertence a [groverburger](https://github.com/groverburger/g3d) e também utiliza a licença MIT. Consulte `example/g3d/LICENSE-g3d`.
+O g3d, incluído em `g3d/` na raiz, pertence a [groverburger](https://github.com/groverburger/g3d) e também utiliza a licença MIT. Consulte `g3d-LICENSE`.
 
 ---
 
@@ -135,12 +135,12 @@ Made by **generico_cube**.
 
 ## Installation
 
-Copy [`example/g3d/glb.lua`](example/g3d/glb.lua) into the `g3d/` folder of your project.
+Copy the [`g3d-cube-tools/g3d-glb/`](../g3d-glb/init.lua) folder into your project (next to `g3d/`).
 
 ## Animated model
 
 ```lua
-local glb = require "g3d.glb"
+local glb = require "g3d-cube-tools.g3d-glb"
 
 local character = glb.newModel("models/character.glb", {0, 0, 0})
 character:play("Walk")
@@ -189,7 +189,7 @@ All commands have English and Portuguese names. You can use whichever you prefer
 
 ```lua
 local g3d = require "g3d"
-local glb = require "g3d.glb"
+local glb = require "g3d-cube-tools.g3d-glb"
 
 local verts, tex = glb.load("models/magic_cube.glb")
 local model = g3d.newModel(verts, tex, {0, 0, 0}, nil, 1)
@@ -244,4 +244,4 @@ To include multiple animations in the same file, export your Actions or NLA Trac
 
 MIT. Made by **generico_cube**.
 
-The g3d library, included in `example/g3d/`, belongs to [groverburger](https://github.com/groverburger/g3d) and is also licensed under MIT. See `example/g3d/LICENSE-g3d`.
+The g3d library, included in `g3d/` at the root, belongs to [groverburger](https://github.com/groverburger/g3d) and is also licensed under MIT. See `g3d-LICENSE`.

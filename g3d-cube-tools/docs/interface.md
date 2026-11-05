@@ -16,16 +16,17 @@ UI, entrada unificada e clique em objetos 3D para o [g3d](https://github.com/gro
 - **Clique em objetos 3D:** hover, pressionar, soltar, clicar e arrastar em modelos do g3d (mouse e toque), além de projeção mundo → tela para textos que seguem objetos.
 - **Layout:** âncoras, tamanhos em %, escala automática para qualquer resolução, área segura de celular (notch) e camadas (HUD / menu / pausa...).
 
-Demo: rode `love .` na raiz do repositório e aperte `4`. Código: `demos/interface/main.lua`.
+Demo: rode `love .` na raiz do repositório e aperte `4`. Código: `g3d-cube-tools/demos/interface/main.lua`.
 
 ## Instalação
 
-Copie a pasta `g3dui/` para o seu projeto (junto da pasta `g3d/`):
+Copie a pasta `g3d-cube-tools/` (ou só `g3d-cube-tools/g3dui/`) para o seu projeto, junto da pasta `g3d/`:
 
 ```
 seu-jogo/
 ├── g3d/
-├── g3dui/
+├── g3d-cube-tools/
+│   └── g3dui/
 └── main.lua
 ```
 
@@ -33,7 +34,7 @@ seu-jogo/
 
 ```lua
 local g3d = require("g3d")
-local ui  = require("g3dui")
+local ui  = require "g3d-cube-tools.g3dui"
 
 function love.load()
     ui.setup{ camera = g3d.camera }   -- a câmera só é necessária para clicar em 3D
@@ -194,16 +195,17 @@ UI, unified input and 3D picking for [g3d](https://github.com/groverburger/g3d) 
 - **Click 3D objects:** hover, press, release, click and drag on g3d models (mouse and touch), plus world → screen projection for labels that follow objects.
 - **Layout:** anchors, percent sizes, automatic scaling for any resolution, phone safe-area, layers (HUD / menu / pause...).
 
-Demo: run `love .` in the repository root and press `4`. Source: `demos/interface/main.lua`.
+Demo: run `love .` in the repository root and press `4`. Source: `g3d-cube-tools/demos/interface/main.lua`.
 
 ## Install
 
-Copy the `g3dui/` folder into your project (next to `g3d/`):
+Copy the `g3d-cube-tools/` folder (or just `g3d-cube-tools/g3dui/`) into your project, next to `g3d/`:
 
 ```
 your-game/
 ├── g3d/
-├── g3dui/
+├── g3d-cube-tools/
+│   └── g3dui/
 └── main.lua
 ```
 
@@ -211,7 +213,7 @@ your-game/
 
 ```lua
 local g3d = require("g3d")
-local ui  = require("g3dui")
+local ui  = require "g3d-cube-tools.g3dui"
 
 function love.load()
     ui.setup{ camera = g3d.camera }   -- camera is only needed for 3D picking

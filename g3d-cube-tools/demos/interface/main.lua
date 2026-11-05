@@ -7,7 +7,7 @@
 -- Abra pelo menu do g3d-cube-tools (tecla 4). F10 volta ao menu.
 
 local g3d = require("g3d")
-local ui = require("g3dui")
+local ui = require "g3d-cube-tools.g3dui"
 
 local isMobile = (love.system.getOS() == "Android" or love.system.getOS() == "iOS")
 
