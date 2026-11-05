@@ -5,7 +5,7 @@
 --   joystick -> W A S D      look pad -> love.mousemoved      buttons -> any key
 -- Built with g3dui (the hub's own UI library). Only the hub uses this file.
 
-local ui = require("g3dui")
+local ui = require "g3d-cube-tools.g3dui"
 
 local touch = {}
 

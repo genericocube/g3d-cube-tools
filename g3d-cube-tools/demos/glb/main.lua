@@ -1,12 +1,12 @@
 local g3d = require "g3d"
-local glb = require "g3d.glb"
+local glb = require "g3d-cube-tools.g3d-glb"
 
 -- modelo ANIMADO (as funções em português também funcionam: tocar, pausar, continuar, parar...)
-local cubo = glb.newModel("demos/glb/modelos/cubo_magico.glb", {0, 0, 0})
+local cubo = glb.newModel("g3d-cube-tools/demos/glb/modelos/cubo_magico.glb", {0, 0, 0})
 cubo:play("Rotacao")       -- tocar("Rotacao")
 
 -- o mesmo arquivo como modelo ESTÁTICO (parado, sem animação)
-local verts, tex = glb.load("demos/glb/modelos/cubo_magico.glb")
+local verts, tex = glb.load("g3d-cube-tools/demos/glb/modelos/cubo_magico.glb")
 local parado = g3d.newModel(verts, tex, {-4.5, 0, 0}, nil, 1)
 
 local speed = 1

@@ -19,7 +19,7 @@ Iluminação em tempo real para o [g3d](https://github.com/groverburger/g3d) 1.6
 
 ```lua
 local g3d = require "g3d"
-local Lighting = require "g3d-iluminacao"
+local Lighting = require "g3d-cube-tools.g3d-iluminacao"
 
 local lighting, sol
 
@@ -123,7 +123,7 @@ Real-time lighting for [g3d](https://github.com/groverburger/g3d) 1.6.0 + LÖVE 
 
 ```lua
 local g3d = require "g3d"
-local Lighting = require "g3d-iluminacao"
+local Lighting = require "g3d-cube-tools.g3d-iluminacao"
 
 local lighting
 
