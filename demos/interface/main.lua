@@ -171,6 +171,7 @@ local function buildUI()
             end },
             ui.button{ text = "Resume", w = 260, onClick = function() ui.hideLayer("menu") end },
             ui.button{ text = "Reset", w = 260, onClick = function() resetGame() ui.hideLayer("menu") end },
+            ui.button{ text = "Main menu (F10)", w = 260, onClick = function() love.event.quit("restart") end },
             ui.button{ text = "Quit", w = 260, onClick = function() love.event.quit() end },
         },
     }
